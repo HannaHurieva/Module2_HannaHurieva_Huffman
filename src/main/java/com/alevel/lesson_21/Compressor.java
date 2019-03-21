@@ -1,16 +1,14 @@
 package com.alevel.lesson_21;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
 import java.util.*;
 
 public class Compressor {
-    protected static void CompressionText() throws Exception {
-        String string = readingDataTextFromInputFile();
+    protected static void CompressionText(String pathToFile) throws Exception {
+        String string = readingDataTextFromInputFile(pathToFile);
         Map<String, Integer> symbolRepetitions = buildSymbolRepetitionsMap(string);
 
-        FileWriter frequencyTable = new FileWriter("src/main/java/frequencyTable.txt");
+        FileWriter frequencyTable = new FileWriter("src/main/java/out_compressor/frequencyTable.txt");
         for (Map.Entry<String, Integer> entry : symbolRepetitions.entrySet()) {
             frequencyTable.write(entry.getKey() + " : " + entry.getValue() + "\n");
         }
@@ -18,7 +16,7 @@ public class Compressor {
 
         Map<String, Node> symbolBundleCodeHuffman = buildCodeHuffman(symbolRepetitions);
 
-        FileWriter matchTable = new FileWriter("src/main/java/matchTable.txt");
+        FileWriter matchTable = new FileWriter("src/main/java/out_compressor/matchTable.txt.table");
         for (Map.Entry<String, Node> entry : symbolBundleCodeHuffman.entrySet()) {
             matchTable.write(entry.getKey() + " : " + entry.getValue().code + "\n");
         }
@@ -30,9 +28,22 @@ public class Compressor {
             encodedString.append(symbolBundleCodeHuffman.get(symbol).code);
         }
 
-        FileWriter encodingText = new FileWriter("src/main/java/encodingText.txt");
+        File out = new File(pathToFile);
+        String nameFile = out.getName();
+
+        try (FileOutputStream encodingText = new FileOutputStream("src/main/java/out_compressor/" + nameFile + ".hf")) {
+            // line break bytes
+            byte[] buffer = encodedString.toString().getBytes();
+
+            encodingText.write(buffer, 0, buffer.length);
+        } catch (IOException ex) {
+
+            System.out.println(ex.getMessage());
+        }
+
+/*        FileWriter encodingText = new FileWriter("src/main/java/out_compressor/" + nameFile + ".hf");
         encodingText.write(encodedString.toString());
-        encodingText.close();
+        encodingText.close();*/
 
         System.out.println("Encoding text :");
         System.out.println(encodedString.toString());
@@ -95,8 +106,8 @@ public class Compressor {
         return symbolRepetitions;
     }
 
-    protected static String readingDataTextFromInputFile() throws FileNotFoundException {
-        FileReader input = new FileReader("src/main/java/input.txt");
+    protected static String readingDataTextFromInputFile(String pathToFile) throws FileNotFoundException {
+        FileReader input = new FileReader(pathToFile);
         Scanner scanner = new Scanner(input);
         String string = scanner.nextLine();
 

@@ -83,7 +83,7 @@ public class DecompressorTest extends Decompressor {
         actual.put("f", "11111");
         actual.put("g", "11110");
 
-        Map<String, String> expected = readingMatchTableToMapSymbolCode();
+        Map<String, String> expected = readingMatchTableToMapSymbolCode("src/main/java/matchTable.txt");
         Assert.assertEquals(expected, actual);
     }
 }

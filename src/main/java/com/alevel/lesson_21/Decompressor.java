@@ -1,23 +1,26 @@
 package com.alevel.lesson_21;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.*;
 
 public class Decompressor {
-    protected static void DecompressorText() throws Exception {
-        Map<String, String> matchTable = readingMatchTableToMapSymbolCode();
+    protected static void DecompressorText(String pathToFile, String pathToFileTable) throws Exception {
+        Map<String, String> matchTable = readingMatchTableToMapSymbolCode(pathToFileTable);
 
         System.out.println("symbol : code");
         for (Map.Entry<String, String> entry : matchTable.entrySet()) {
             System.out.println("   " + entry.getKey() + "   : " + entry.getValue());
         }
 
-        List<String> inputString = readingEncodedStringToArrayList((readingDecodedTextFromFile()));
+        List<String> inputString = readingEncodedStringToArrayList((readingDecodedTextFromFile(pathToFile)));
         StringBuffer decodedText = buildDecodedString(matchTable, inputString);
 
-        FileWriter decodingText = new FileWriter("src/main/java/decodingText.txt");
+        File out = new File(pathToFile);
+        String nameFile = out.getName();
+        FileWriter decodingText = new FileWriter("src/main/java/out_decompressor/" + nameFile);
         decodingText.write(decodedText.toString());
         decodingText.close();
 
@@ -50,14 +53,14 @@ public class Decompressor {
         return codeBit;
     }
 
-    protected static String readingDecodedTextFromFile() throws FileNotFoundException {
-        FileReader text = new FileReader("src/main/java/encodingText.txt");
+    protected static String readingDecodedTextFromFile(String pathToFile) throws FileNotFoundException {
+        FileReader text = new FileReader(pathToFile);
         Scanner scanner = new Scanner(text);
         return scanner.nextLine();
     }
 
-    protected static Map<String, String> readingMatchTableToMapSymbolCode() throws FileNotFoundException {
-        FileReader table = new FileReader("src/main/java/matchTable.txt");
+    protected static Map<String, String> readingMatchTableToMapSymbolCode(String path) throws FileNotFoundException {
+        FileReader table = new FileReader(path);
         Scanner scanner = new Scanner(table);
 
         Map<String, String> matchTable = new HashMap<>();
