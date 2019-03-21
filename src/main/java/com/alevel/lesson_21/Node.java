@@ -15,11 +15,10 @@ public class Node implements Comparable<Node> {
         this.code = code;
         if (leftChild != null) leftChild.buildCode(code + "0");
         if (rightChild != null) rightChild.buildCode(code + "1");
-        if (leftChild == null && rightChild == null) System.out.println("   " + symbol + "   : " + code);
+//        if (leftChild == null && rightChild == null) System.out.println("   " + symbol + "   : " + code);
     }
 
     StringBuffer visitNode(Node node, List<Integer> codeBit, int index, StringBuffer text) {
-//        StringBuffer text = new StringBuffer();
         if (index >= codeBit.size()) return text;
         if (node.leftChild == null && node.rightChild == null) {
             text.append(node.symbol);

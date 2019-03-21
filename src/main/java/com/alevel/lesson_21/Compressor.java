@@ -41,10 +41,6 @@ public class Compressor {
             System.out.println(ex.getMessage());
         }
 
-/*        FileWriter encodingText = new FileWriter("src/main/java/out_compressor/" + nameFile + ".hf");
-        encodingText.write(encodedString.toString());
-        encodingText.close();*/
-
         System.out.println("Encoding text :");
         System.out.println(encodedString.toString());
         System.out.println("Length of encoded string = " + encodedString.length());
@@ -73,14 +69,13 @@ public class Compressor {
         if (symbolRepetitions.size() == 1) {
             root.code = "0";
         } else {
-            System.out.println("Table Huffman");
-            System.out.println("symbol : code");
+/*            System.out.println("Table Huffman");
+            System.out.println("symbol : code");*/
             root.buildCode("");
         }
 
         System.out.println("Huffman Tree");
         System.out.println(root.toString());
-
         return symbolBundleCodeHuffman;
     }
 

@@ -1,9 +1,6 @@
 package com.alevel.lesson_21;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
 import java.util.*;
 
 public class Decompressor {
@@ -15,24 +12,23 @@ public class Decompressor {
             System.out.println("   " + entry.getKey() + "   : " + entry.getValue());
         }
 
-        List<String> inputString = readingEncodedStringToArrayList((readingDecodedTextFromFile(pathToFile)));
-        StringBuffer decodedText = buildDecodedString(matchTable, inputString);
+        byte[] dataDecodedText = readingDecodedTextFromFile(pathToFile);
+        StringBuffer decodedText= buildDecodedStringFromByte(matchTable, dataDecodedText);
+        System.out.println("Decoded text from byte:");
+        System.out.println(decodedText.toString());
 
         File out = new File(pathToFile);
         String nameFile = out.getName();
         FileWriter decodingText = new FileWriter("src/main/java/out_decompressor/" + nameFile);
         decodingText.write(decodedText.toString());
         decodingText.close();
-
-        System.out.println("Decoded text :");
-        System.out.println(decodedText.toString());
     }
 
-    protected static StringBuffer buildDecodedString(Map<String, String> matchTable, List<String> inputString) {
+    protected static StringBuffer buildDecodedStringFromByte(Map<String, String> matchTable, byte[] dataText) {
         StringBuffer decodedString = new StringBuffer();
         String tempStr = "";
-        for (int i = 0; i < inputString.size(); i++) {
-            tempStr += inputString.get(i);
+        for (int i = 0; i < dataText.length; i++) {
+            tempStr += String.valueOf(dataText[i]-48);
             for (Map.Entry<String, String> entry : matchTable.entrySet()) {
                 if (tempStr.equals(entry.getValue())) {
                     decodedString.append(entry.getKey());
@@ -44,25 +40,26 @@ public class Decompressor {
         return decodedString;
     }
 
-    protected static List<String> readingEncodedStringToArrayList(String encodedText) throws FileNotFoundException {
-        List<String> codeBit = new ArrayList<>();
-        char[] characters = encodedText.toCharArray();
-        for (int i = 0; i < encodedText.length(); i++) {
-            codeBit.add(String.valueOf(characters[i]));
-        }
-        return codeBit;
-    }
+    protected static byte[] readingDecodedTextFromFile(String pathToFile) {
+        try (FileInputStream text = new FileInputStream(pathToFile)) {
+            byte[] buffer = new byte[text.available()];
+            text.read(buffer, 0, buffer.length);
 
-    protected static String readingDecodedTextFromFile(String pathToFile) throws FileNotFoundException {
-        FileReader text = new FileReader(pathToFile);
-        Scanner scanner = new Scanner(text);
-        return scanner.nextLine();
+            System.out.println("File data:");
+            for (int i = 0; i < buffer.length; i++) {
+                System.out.print((char) buffer[i]);
+            }
+            System.out.println();
+            return buffer;
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return null;
     }
 
     protected static Map<String, String> readingMatchTableToMapSymbolCode(String path) throws FileNotFoundException {
         FileReader table = new FileReader(path);
         Scanner scanner = new Scanner(table);
-
         Map<String, String> matchTable = new HashMap<>();
         while (scanner.hasNextLine()) {
             String data = scanner.nextLine();

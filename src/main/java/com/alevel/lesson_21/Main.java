@@ -6,10 +6,10 @@ import static com.alevel.lesson_21.Decompressor.DecompressorText;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        //src/main/java/input.txt
+        //src/main/java/input.txt - путь к исходному файлу со строкой для кодирования
 
-        //src/main/java/encodingText.txt.hf
-        //src/main/java/matchTable.txt.table
+        //src/main/java/encodingText.txt.hf - путь к файлу с закодированной строкой в байтах
+        //src/main/java/matchTable.txt.table - путь к таблице соответствий
 
         System.out.println("Input path to file :");
         Scanner scanner = new Scanner(System.in);
