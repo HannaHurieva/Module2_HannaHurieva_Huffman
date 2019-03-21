@@ -1,8 +1,5 @@
 package com.alevel.lesson_21;
 
-import java.io.FileReader;
-import java.util.Scanner;
-
 import static com.alevel.lesson_21.Decompressor.DecompressorText;
 
 public class Main {

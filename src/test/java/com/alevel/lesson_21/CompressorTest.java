@@ -12,7 +12,7 @@ public class CompressorTest extends Compressor {
     @Test
     public void repetitionsMapBuilderTest1() {
         String testString = "abcd adbbe accdfe aaaa bbb cc d e fg";
-        Map<String, Integer> expected = buildRepetitionsMap(testString);
+        Map<String, Integer> expected = buildSymbolRepetitionsMap(testString);
         Map<String, Integer> actual = new HashMap<>();
         actual.put(" ", 8);
         actual.put("a", 7);
@@ -28,7 +28,7 @@ public class CompressorTest extends Compressor {
     @Test
     public void repetitionsMapBuilderTest2() {
         String testString = "abacabad";
-        Map<String, Integer> expected = buildRepetitionsMap(testString);
+        Map<String, Integer> expected = buildSymbolRepetitionsMap(testString);
         Map<String, Integer> actual = new HashMap<>();
         actual.put("a", 4);
         actual.put("b", 2);
@@ -63,20 +63,4 @@ public class CompressorTest extends Compressor {
 
         Assert.assertEquals(expected, actual);
     }
-
-/*    @Test
-    public void stringCompressionTest1() throws Exception {
-        String testString = "abacabad";
-        StringBuffer expected = CompressionText(testString);
-        StringBuffer actual = new StringBuffer("01001100100111");
-        Assert.assertEquals(expected.toString(), actual.toString());
-    }
-
-    @Test
-    public void stringCompressionTest2() throws Exception {
-        String testString = "a";
-        StringBuffer expected = CompressionText(testString);
-        StringBuffer actual = new StringBuffer("0");
-        Assert.assertEquals(expected.toString(), actual.toString());
-    }*/
 }

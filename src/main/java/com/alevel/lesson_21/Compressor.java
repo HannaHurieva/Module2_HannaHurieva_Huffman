@@ -7,8 +7,8 @@ import java.util.*;
 
 public class Compressor {
     protected static void CompressionText() throws Exception {
-        String string = readDataTextFromInputFile();
-        Map<String, Integer> symbolRepetitions = buildRepetitionsMap(string);
+        String string = readingDataTextFromInputFile();
+        Map<String, Integer> symbolRepetitions = buildSymbolRepetitionsMap(string);
 
         FileWriter frequencyTable = new FileWriter("src/main/java/frequencyTable.txt");
         for (Map.Entry<String, Integer> entry : symbolRepetitions.entrySet()) {
@@ -73,7 +73,7 @@ public class Compressor {
         return symbolBundleCodeHuffman;
     }
 
-    protected static Map<String, Integer> buildRepetitionsMap(String string) {
+    protected static Map<String, Integer> buildSymbolRepetitionsMap(String string) {
         Map<String, Integer> symbolRepetitions = new HashMap<>();
         String symbol;
         int frequency;
@@ -95,7 +95,7 @@ public class Compressor {
         return symbolRepetitions;
     }
 
-    protected static String readDataTextFromInputFile() throws FileNotFoundException {
+    protected static String readingDataTextFromInputFile() throws FileNotFoundException {
         FileReader input = new FileReader("src/main/java/input.txt");
         Scanner scanner = new Scanner(input);
         String string = scanner.nextLine();
