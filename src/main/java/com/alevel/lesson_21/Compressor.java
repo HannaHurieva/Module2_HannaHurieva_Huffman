@@ -1,22 +1,28 @@
 package com.alevel.lesson_21;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.*;
 
 public class Compressor {
-    protected static StringBuffer stringCompression(String string) throws Exception {
+    protected static void CompressionText() throws Exception {
+        String string = readDataTextFromInputFile();
         Map<String, Integer> symbolRepetitions = buildRepetitionsMap(string);
 
         FileWriter frequencyTable = new FileWriter("src/main/java/frequencyTable.txt");
-            for (Map.Entry<String, Integer> entry : symbolRepetitions.entrySet()) {
-                frequencyTable.write(entry.getKey() + " : " + entry.getValue() + "\n");
-            }
-            frequencyTable.close();
+        for (Map.Entry<String, Integer> entry : symbolRepetitions.entrySet()) {
+            frequencyTable.write(entry.getKey() + " : " + entry.getValue() + "\n");
+        }
+        frequencyTable.close();
 
         Map<String, Node> symbolBundleCodeHuffman = buildCodeHuffman(symbolRepetitions);
+
+        FileWriter matchTable = new FileWriter("src/main/java/matchTable.txt");
+        for (Map.Entry<String, Node> entry : symbolBundleCodeHuffman.entrySet()) {
+            matchTable.write(entry.getKey() + " : " + entry.getValue().code + "\n");
+        }
+        matchTable.close();
 
         StringBuffer encodedString = new StringBuffer();
         for (int i = 0; i < string.length(); i++) {
@@ -28,7 +34,9 @@ public class Compressor {
         encodingText.write(encodedString.toString());
         encodingText.close();
 
-        return encodedString;
+        System.out.println("Encoding text :");
+        System.out.println(encodedString.toString());
+        System.out.println("Length of encoded string = " + encodedString.length());
     }
 
     protected static Map<String, Node> buildCodeHuffman(Map<String, Integer> symbolRepetitions) {
@@ -85,5 +93,17 @@ public class Compressor {
         }
 
         return symbolRepetitions;
+    }
+
+    protected static String readDataTextFromInputFile() throws FileNotFoundException {
+        FileReader input = new FileReader("src/main/java/input.txt");
+        Scanner scanner = new Scanner(input);
+        String string = scanner.nextLine();
+
+        System.out.println("Input data text :");
+        System.out.println(string);
+        System.out.println("Length of input string = " + string.length());
+
+        return string;
     }
 }
